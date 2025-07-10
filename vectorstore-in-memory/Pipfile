@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+langchain-community = "*"
+langchain-ollama = "*"
+tweepy = "*"
+flask = "*"
+langchain = "*"
+langchain-openai = "*"
+langchain-pinecone = "*"
+langchain-core = "*"
+python-dotenv = "*"
+langchainhub = "*"
+black = "*"
+dotenv = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.13"
+
+[pipenv]
+allow_prereleases = true
