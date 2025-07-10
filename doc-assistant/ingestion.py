@@ -46,5 +46,54 @@ def ingest_docs():
     print("**** Ingestion complete ****")
 
 
+def ingest_docs_fireCrawl():
+    from langchain_community.document_loaders import FireCrawlLoader
+
+    langchain_documents_base_urls = [
+        "https://python.langchain.com/docs/integrations/chat/",
+        "https://python.langchain.com/docs/integrations/llms/",
+        "https://python.langchain.com/docs/integrations/text_embedding/",
+        "https://python.langchain.com/docs/integrations/document_loaders/",
+        "https://python.langchain.com/docs/integrations/document_transformers/",
+        "https://python.langchain.com/docs/integrations/retrievers/",
+        "https://python.langchain.com/docs/integrations/vectorstores/",
+        "https://python.langchain.com/docs/integrations/tools/",
+        "https://python.langchain.com/docs/integrations/stores/",
+        "https://python.langchain.com/docs/integrations/llm_caching/",
+        "https://python.langchain.com/docs/integrations/graphs/",
+        "https://python.langchain.com/docs/integrations/memory/",
+        "https://python.langchain.com/docs/integrations/callbacks/",
+        "https://python.langchain.com/docs/integrations/chat_loaders/",
+        "https://python.langchain.com/docs/integrations/adapters/",
+    ]
+
+    langchain_documents_base_urls2 = [langchain_documents_base_urls[0]]
+
+    for url in langchain_documents_base_urls:
+        print(f"FireCrawling {url}")
+        loader = FireCrawlLoader(
+            api_key=os.environ["FIRECRAWL_API_KEY"],
+            url=url,
+            mode="crawl",
+            params={
+                "crawlOptions": {"limit": 5},
+                "pageOptions": {"onlyMainContent": True},
+                "wait_until_done": True,
+            },
+        )
+
+        documents = loader.load()
+
+        print(f"Loaded {len(documents)} documents")
+
+        PineconeVectorStore.from_documents(
+            documents,
+            embeddings,
+            index_name="firecrawl-index",
+        )
+
+        print(f"**** Loading {url}* to vector store done ****")
+
+
 if __name__ == "__main__":
     ingest_docs()

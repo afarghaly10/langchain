@@ -21,6 +21,7 @@ tqdm = "*"
 langchain-openai = "*"
 langchain-community = "*"
 langchain-pinecone = "*"
+firecrawl-py = "*"
 
 [dev-packages]
 
